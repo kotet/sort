@@ -3,7 +3,6 @@ language: d
 
 d:
   - dmd
-  - ldc
 
 install:
   - dub fetch doveralls
