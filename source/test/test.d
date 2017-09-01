@@ -1,6 +1,6 @@
 module test;
 
-mixin template test(alias F, alias N)
+mixin template test(alias F)
 {
     unittest
     {
@@ -10,30 +10,47 @@ mixin template test(alias F, alias N)
         import std.range : iota;
 
         writefln!"Test %s:"(fullyQualifiedName!F);
-        foreach (n; 1 .. N + 1)
+
+        size_t sample;
+        size_t n;
+        do
         {
-            auto func = () {
-                import std.random : randomShuffle;
-                import std.range : array, iota;
-                import std.datetime : Duration, StopWatch, to;
-                import std.conv : to;
+            import std.datetime : StopWatch;
+            import core.time : TickDuration;
 
-                auto random = iota(10 ^^ n).array();
-                random.randomShuffle();
-                auto answer = iota(10 ^^ n).array();
+            n++;
+            sample = 0;
+            double result = 0;
+            StopWatch s;
+            s.start();
+            do
+            {
+                sample++;
+                result += () {
+                    import std.random : randomShuffle;
+                    import std.range : array, iota;
+                    import std.datetime : StopWatch, to;
+                    import std.conv : to;
 
-                StopWatch s;
-                s.start();
+                    auto random = iota(10 ^^ n).array();
+                    random.randomShuffle();
+                    auto answer = iota(10 ^^ n).array();
 
-                F(random);
+                    StopWatch s;
+                    s.start();
 
-                s.stop();
-                
-                assert(random == answer);
-                return s.peek().to!("msecs", double);
-            };
-            auto result = iota(100).map!(_ => func()).reduce!((a, b) => a + b) / 100;
-            writefln!"    N = 10^^%s: %s msecs"(n, result);
+                    F(random);
+
+                    s.stop();
+
+                    assert(random == answer);
+                    return s.peek().to!("msecs", double);
+                }();
+            }
+            while (s.peek() < TickDuration.from!"msecs"(100));
+
+            writefln!"    N = 10^^%s avg: %s msecs (sample: %s)"(n, result / sample, sample);
         }
+        while (1 < sample);
     }
 }

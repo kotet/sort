@@ -2,9 +2,9 @@ module bubble.v1;
 
 import test;
 
-mixin test!(sort, 3);
+mixin test!sort;
 
-void sort(int[] random) @nogc nothrow pure
+void sort(T)(T[] random) @nogc nothrow pure
 {
     foreach (i, n; random)
     {
