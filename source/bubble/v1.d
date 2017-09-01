@@ -4,7 +4,7 @@ import test;
 
 mixin test!(sort, 3);
 
-void sort(int[] random) @nogc @safe nothrow pure
+void sort(int[] random) @nogc nothrow pure
 {
     foreach (i, n; random)
     {
