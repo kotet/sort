@@ -1,5 +1,9 @@
 module test;
 
+static import std.algorithm.sorting;
+
+mixin test!(std.algorithm.sorting.sort);
+
 mixin template test(alias F)
 {
     unittest
