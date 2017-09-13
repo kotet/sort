@@ -22,7 +22,6 @@ mixin template test(alias F)
             import std.datetime : StopWatch;
             import core.time : TickDuration;
 
-            n++;
             sample = 0;
             double result = 0;
             StopWatch s;
@@ -54,6 +53,8 @@ mixin template test(alias F)
             while (s.peek() < TickDuration.from!"msecs"(100));
 
             writefln!"    N = 10^^%s avg: %s msecs (sample: %s)"(n, result / sample, sample);
+            
+            n++;
         }
         while (1 < sample);
     }
