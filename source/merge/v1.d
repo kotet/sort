@@ -15,7 +15,7 @@ private T[] mergeSort(T)(T[] array) nothrow pure
 
     if (array.length < 2)
     {
-        return array;
+        return array.dup;
     }
     else
     {
