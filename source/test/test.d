@@ -30,6 +30,7 @@ mixin template test(alias F)
             {
                 sample++;
                 result += () {
+                    import std.algorithm.sorting : isSorted;
                     import std.random : randomShuffle;
                     import std.range : array, iota;
                     import std.datetime : StopWatch, to;
@@ -37,7 +38,6 @@ mixin template test(alias F)
 
                     auto random = iota(10 ^^ n).array();
                     random.randomShuffle();
-                    auto answer = iota(10 ^^ n).array();
 
                     StopWatch s;
                     s.start();
@@ -46,7 +46,7 @@ mixin template test(alias F)
 
                     s.stop();
 
-                    assert(random == answer);
+                    assert(random.isSorted);
                     return s.peek().to!("msecs", double);
                 }();
             }
